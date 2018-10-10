@@ -4,10 +4,7 @@ class C3PO:
 	def __init__(self, milleniumFalconJsonFile):
 		self.milleniumFalconJsonFile = milleniumFalconJsonFile
 
-	def giveMeTheOdds(milleniumFalconJsonFile, empireJsonFile): 
-		milleniumFalconJson = json.load(open(milleniumFalconJsonFile))
-		empireJson = json.load(open(empireJsonFile))
-		# parse the travelTime from start to finish
+	def reachedInTime(milleniumFalconJson):
 		total = 0
 		autonomy = milleniumFalconJson['autonomy']
 		for routes in milleniumFalconJson['routes']:
@@ -16,11 +13,17 @@ class C3PO:
 			if total % autonomy == 0:
 				total += 1
 			if (routes['destination'] == "Endor" and total > 6):
-				return 0
-		return 1
+				return False
+		return True
 
-# I feel like I should be using json.load here instead. 
-# actually no this doesn't matter.
+	def giveMeTheOdds(milleniumFalconJsonFile, empireJsonFile): 
+		milleniumFalconJson = json.load(open(milleniumFalconJsonFile))
+		empireJson = json.load(open(empireJsonFile))
+		# parse the travelTime from start to finish
+		if (C3PO.reachedInTime(milleniumFalconJson)):
+			pass
+		return 0
+
 milleniumFalconJsonFile = "./millenium-falcon.json"
 empireJsonFile = "./empire.json"
 print(C3PO.giveMeTheOdds(milleniumFalconJsonFile, empireJsonFile))
