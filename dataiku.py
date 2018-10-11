@@ -5,11 +5,12 @@ class C3PO:
 		self.milleniumFalconJson = jsoncfg.load(milleniumFalconJsonFile)
 		self.autonomy = self.milleniumFalconJson['autonomy']
 
+	# Check if the Millenium can reach Endor before the Death Star
+	# annilihates it. 
 	def reachedInTime(self, empireJson):
 		total = 0
 		countdown = empireJson['countdown']
 		for routes in self.milleniumFalconJson['routes']:
-			# add the travel times until it reaches the first instance of Endor
 			total += routes['travelTime']
 			if total % self.autonomy == 0:
 				total += 1
