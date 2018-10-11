@@ -3,15 +3,15 @@ import jsoncfg
 class C3PO:
 	def __init__(self, milleniumFalconJsonFile):
 		self.milleniumFalconJson = jsoncfg.load(milleniumFalconJsonFile)
+		self.autonomy = self.milleniumFalconJson['autonomy']
 
-	def reachedInTime(milleniumFalconJson, empireJson):
+	def reachedInTime(self, empireJson):
 		total = 0
-		autonomy = milleniumFalconJson['autonomy']
 		countdown = empireJson['countdown']
-		for routes in milleniumFalconJson['routes']:
+		for routes in self.milleniumFalconJson['routes']:
 			# add the travel times until it reaches the first instance of Endor
 			total += routes['travelTime']
-			if total % autonomy == 0:
+			if total % self.autonomy == 0:
 				total += 1
 			if (routes['destination'] == "Endor" and total > countdown):
 				return False
@@ -20,7 +20,7 @@ class C3PO:
 	def giveMeTheOdds(self, empireJsonFile):
 		empireJson = jsoncfg.load(empireJsonFile)
 		# parse the travelTime from start to finish
-		if (C3PO.reachedInTime(self.milleniumFalconJson, empireJson)):
+		if (C3PO.reachedInTime(self, empireJson)):
 			pass
 		return 0
 
