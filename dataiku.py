@@ -12,11 +12,13 @@ class C3PO:
 		countdown = empireJson['countdown']
 		for routes in self.milleniumFalconJson['routes']:
 			total += routes['travelTime']
+			if total > countdown:
+				return False
+			if routes['destination'] == "Endor":
+				return True
 			if total % self.autonomy == 0:
 				total += 1
-			if (routes['destination'] == "Endor" and total > countdown):
-				return False
-		return True
+		return False
 
 	def probabilityCaptured(k):
 		sumProbability = 0
