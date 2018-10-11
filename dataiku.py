@@ -18,6 +18,12 @@ class C3PO:
 				return False
 		return True
 
+	def probabilityCaptured(k):
+		sumProbability = 0
+		for i in range(k):
+			sumProbability += (9 ** i) / (10 ** (i + 1))
+		return (sumProbability)
+
 	def giveMeTheOdds(self, empireJsonFile):
 		empireJson = jsoncfg.load(empireJsonFile)
 		# parse the travelTime from start to finish
@@ -29,3 +35,4 @@ milleniumFalconJsonFile = "./millenium-falcon.json"
 empireJsonFile = "./empire.json"
 initialize = C3PO(milleniumFalconJsonFile)
 print(C3PO.giveMeTheOdds(initialize, empireJsonFile))
+print(C3PO.probabilityCaptured(0))
