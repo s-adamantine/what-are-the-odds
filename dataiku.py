@@ -1,4 +1,4 @@
-import json
+import jsoncfg
 
 class C3PO:
 	def __init__(self, milleniumFalconJsonFile):
@@ -18,8 +18,8 @@ class C3PO:
 		return True
 
 	def giveMeTheOdds(milleniumFalconJsonFile, empireJsonFile):
-		milleniumFalconJson = json.load(open(milleniumFalconJsonFile))
-		empireJson = json.load(open(empireJsonFile))
+		milleniumFalconJson = jsoncfg.load(milleniumFalconJsonFile)
+		empireJson = jsoncfg.load(empireJsonFile)
 		# parse the travelTime from start to finish
 		if (C3PO.reachedInTime(milleniumFalconJson, empireJson)):
 			pass
