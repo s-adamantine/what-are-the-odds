@@ -1,11 +1,10 @@
 import jsoncfg
-from anytree import Node, RenderTree
 
 class Node:
 	def __init__(self, name, travel_time=0):
 		self.name = name
 		self.travel_time = travel_time
-		self.next = None
+		self.next = {}
 
 class C3PO:
 	def __init__(self, milleniumFalconJsonFile):
@@ -15,26 +14,17 @@ class C3PO:
 	# Generate an array (or a python list) of linked lists, each representing a 
 	# single valid travel path from Tatooine to Endor.
 	def generatePaths(self):
-		nodes = []
-		# a dictionary would make this easier to access  
-		routes = {}
-		nodes.append('Tatooine')
-		nodes.append('Endor')
-		# Create one route called Tatooine 
-		routes['Tatooine'] = Node('Tatooine', 0)
+		tree = {'Tatooine': []}
 		# iterate through each new destination and add it to an origin 
 		for route in self.milleniumFalconJson['routes']:
-			# check if a node with the name already exists
-				if route['destination'] in nodes:
-					if route['origin'] in nodes:
-						#add the destination to the origin
-							#can't access the specific node unfortunately
-					else:
-						nodes.append(Node(route['destination'], route['travelTime']))
-					pass
-				else:
-					# if it doesn't exist, create one
-					nodes.append(Node(route['destination'], route['travelTime']))
+			print(route['origin'])
+		  	# check if a node with the name already exists
+			if route['origin'] in tree:
+				#add the destination to the origin
+				tree[(route['origin'])].append({route['destination']})
+			# else:
+			# 	nodes.append(Node(route['destination'], route['travelTime']))
+		print(tree)
 
 	# Check if the Millenium can reach Endor before the Death Star
 	# annilihates it. 
