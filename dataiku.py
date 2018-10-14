@@ -1,10 +1,5 @@
 import jsoncfg
-
-class Node:
-	def __init__(self, name, travel_time=0):
-		self.name = name
-		self.travel_time = travel_time
-		self.next = {}
+from copy import deepcopy
 
 class C3PO:
 	def __init__(self, milleniumFalconJsonFile):
@@ -14,17 +9,21 @@ class C3PO:
 	# Generate an array (or a python list) of linked lists, each representing a 
 	# single valid travel path from Tatooine to Endor.
 	def generatePaths(self):
-		tree = {'Tatooine': []}
+		paths = [['Tatooine']]
 		# iterate through each new destination and add it to an origin 
 		for route in self.milleniumFalconJson['routes']:
-			print(route['origin'])
-		  	# check if a node with the name already exists
-			if route['origin'] in tree:
-				#add the destination to the origin
-				tree[(route['origin'])].append({route['destination']})
-			# else:
-			# 	nodes.append(Node(route['destination'], route['travelTime']))
-		print(tree)
+			print('the current route is ' + route['origin'] + ' to ' + route['destination'])
+			for path in paths:
+				if route['origin'] in path:
+					if path[-1] == route['origin']:
+						path.append(route['destination'])
+					else:
+						indexOf = path.index(route['origin'])
+						toAppend = path[:indexOf + 1]
+						toAppend.append(route['destination'])
+						paths.append(toAppend)
+						break
+			print(paths)
 
 	# Check if the Millenium can reach Endor before the Death Star
 	# annilihates it. 
