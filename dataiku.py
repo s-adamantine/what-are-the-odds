@@ -18,6 +18,15 @@ class Empire:
 		return empire_path
 
 class C3PO:
+
+	# @paths: A list of lists. Each element of the outer list contains a possible
+	#   	  journey that you can take from Tatooine.
+	# @travel_times: A list of lists. Each element of the outer list contains a list
+	#         of integers each detailing the time taken to travel from planet to planet
+	#         of the respective path in self.paths.
+	# @min_path_times: List. Each element in this list corresponds to a corresponding
+	#         path in self.paths. Integer. The minimum time you would take to complete
+	#         the total journey, including refuels.
 	def __init__(self, milleniumFalconJsonFile):
 		self.milleniumFalconJson = jsoncfg.load(milleniumFalconJsonFile)
 		self.autonomy = self.milleniumFalconJson['autonomy']
