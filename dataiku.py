@@ -85,18 +85,18 @@ class C3PO:
 	def calculateProbability(self, path, empire):
 		times = [d for d in path if type(d) == int]
 		paths = [p for p in path if type(p) == str]
-		# check if the empire will be in the same location as the path ever
 		current_day = 0
+		k = 0
 		for (planet, travel_time) in zip(paths, times):
-			k = 0
 			current_day += travel_time
 			if current_day > empire.countdown:
 				return 0
 			if planet in empire.paths and current_day in empire.paths[planet]:
 				k += 1
-			if current_day % self.autonomy == 0: #force refuel
+			if current_day != 0 and current_day % self.autonomy == 0: #force refuel
 				current_day += 1
-		print('k is', k)
+				if planet in empire.paths and current_day in empire.paths[planet]:
+					k += 1
 		return(1 - C3PO.probabilityCaptured(k))
 
 	def giveMeTheOdds(self, empireJsonFile):
@@ -106,8 +106,6 @@ class C3PO:
 		probabilities = []
 		for path in paths:
 			probabilities.append(C3PO.calculateProbability(self, path, empire))
-		print(paths)
-		print(probabilities)
 		return max(probabilities)
 
 milleniumFalconJsonFile = "./millenium-falcon.json"
