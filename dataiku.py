@@ -25,7 +25,7 @@ class C3PO:
 	# Generate an array (or a python list) of linked lists, each representing a 
 	# single valid travel path from Tatooine to Endor.
 	def generatePaths(self):
-		paths = [['Tatooine']]
+		paths = [[0, 'Tatooine']]
 		# iterate through each new destination and add it to an origin 
 		for route in self.milleniumFalconJson['routes']:
 			for path in paths:
@@ -80,14 +80,35 @@ class C3PO:
 			sumProbability += (9 ** i) / (10 ** (i + 1))
 		return (sumProbability)
 
+	# Find the maximum probability of reaching Endor in the path
+	# (assuming no float time)
+	def calculateProbability(self, path, empire):
+		times = [d for d in path if type(d) == int]
+		paths = [p for p in path if type(p) == str]
+		# check if the empire will be in the same location as the path ever
+		current_day = 0
+		for (planet, travel_time) in zip(paths, times):
+			k = 0
+			current_day += travel_time
+			if current_day > empire.countdown:
+				return 0
+			if planet in empire.paths and current_day in empire.paths[planet]:
+				k += 1
+			if current_day % self.autonomy == 0: #force refuel
+				current_day += 1
+		print('k is', k)
+		return(1 - C3PO.probabilityCaptured(k))
+
 	def giveMeTheOdds(self, empireJsonFile):
 		paths = C3PO.generatePaths(self)
 		path_times = C3PO.calculateMinimumTime(self, paths)
 		empire = Empire(empireJsonFile)
-		# parse the travelTime from start to finish
-		if (C3PO.reachedInTime(self, empire.json)):
-			return 1
-		return 0
+		probabilities = []
+		for path in paths:
+			probabilities.append(C3PO.calculateProbability(self, path, empire))
+		print(paths)
+		print(probabilities)
+		return max(probabilities)
 
 milleniumFalconJsonFile = "./millenium-falcon.json"
 empireJsonFile = "./empire.json"
