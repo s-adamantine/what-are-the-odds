@@ -70,21 +70,6 @@ class C3PO:
 			min_path_times.append(total)
 		return min_path_times
 
-	# Check if the Millenium can reach Endor before the Death Star
-	# annilihates it. 
-	def reachedInTime(self, empireJson):
-		total = 0
-		countdown = empireJson['countdown']
-		for routes in self.milleniumFalconJson['routes']:
-			total += routes['travelTime']
-			if total > countdown:
-				return False
-			if routes['destination'] == "Endor":
-				return True
-			if total % self.autonomy == 0:
-				total += 1
-		return False
-
 	def probabilityCaptured(k):
 		sumProbability = 0
 		for i in range(k):
