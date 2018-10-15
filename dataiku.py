@@ -1,5 +1,5 @@
 import jsoncfg
-from copy import deepcopy
+import copy
 
 class Empire:
 	def __init__(self, empireJsonFile):
@@ -32,6 +32,11 @@ class C3PO:
 		self.autonomy = self.milleniumFalconJson['autonomy']
 		self.paths = C3PO.generatePaths(self)
 		self.min_path_times = C3PO.calculateMinimumTime(self)
+
+	# Copies a single path from the origin until (and including) a planet.
+	def copyPath(path, planet):
+		indexOf = path.index(planet)
+		return copy.copy(path[:(indexOf + 1)])
 
 	# Generate an array (or a python list) of linked lists, each representing a 
 	# single valid travel path from Tatooine to Endor.
