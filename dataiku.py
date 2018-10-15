@@ -21,6 +21,8 @@ class C3PO:
 	def __init__(self, milleniumFalconJsonFile):
 		self.milleniumFalconJson = jsoncfg.load(milleniumFalconJsonFile)
 		self.autonomy = self.milleniumFalconJson['autonomy']
+		self.paths = C3PO.generatePaths(self)
+		self.min_path_times = C3PO.calculateMinimumTime(self)
 
 	# Generate an array (or a python list) of linked lists, each representing a 
 	# single valid travel path from Tatooine to Endor.
@@ -43,9 +45,9 @@ class C3PO:
 		return paths
 
 	# Calculate the minimum amount of travel time taken for a route
-	def calculateMinimumTime(self, paths):
-		path_times = []
-		for path in paths:
+	def calculateMinimumTime(self):
+		min_path_times = []
+		for path in self.paths:
 			total = 0
 			for route in path:
 				if "Endor" not in path:
@@ -56,8 +58,8 @@ class C3PO:
 					total += route
 				if total % self.autonomy == 0:
 					total += 1
-			path_times.append(total)
-		return path_times
+			min_path_times.append(total)
+		return min_path_times
 
 	# Check if the Millenium can reach Endor before the Death Star
 	# annilihates it. 
@@ -100,11 +102,9 @@ class C3PO:
 		return(1 - C3PO.probabilityCaptured(k))
 
 	def giveMeTheOdds(self, empireJsonFile):
-		paths = C3PO.generatePaths(self)
-		path_times = C3PO.calculateMinimumTime(self, paths)
 		empire = Empire(empireJsonFile)
 		probabilities = []
-		for path in paths:
+		for path in self.paths:
 			probabilities.append(C3PO.calculateProbability(self, path, empire))
 		return max(probabilities)
 
