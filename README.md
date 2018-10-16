@@ -3,15 +3,7 @@
 
 In order to tackle this problem, I would first need to list out all the possible paths that you can take between Tatooine and Endor. 
 
-```mermaid
-graph TD;
-	Tatooine-->|6|Dagobah;
-    Tatooine-->|6|d[Hoth];
-    d[Hoth]-->|1|f[Endor]
-    Dagobah-->|4|b[Endor];
-    Dagobah-->|1|e[Hoth];
-    e[Hoth]-->|1|g[Endor]
-```
+![Tree Diagram](./tree-diagram.png)
 
 You can do this in different ways. The most obvious way that I first thought of was to create a generic tree (not a binary tree, because there is a possibility of having more than two planets on each level). Each node in the tree would contain information about the travel time, and the name of the planet.  
 
