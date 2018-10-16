@@ -54,6 +54,27 @@ class C3PO:
 						break
 		return paths
 
+	# Generate all the extra float paths, given the current possible paths and the empire's
+	# countdown.
+	def generateFloatPaths(self, empire):
+		wait = [1, 'Wait']
+		float_paths = []
+		for path in self.paths:
+			float_days = empire.countdown - C3PO.calculateMinimumTime(self.autonomy, path)
+			if float_days <= 0:
+				continue
+			else:
+				# only need to take a float day if you're trying to avoid someone.
+				for danger_planet in empire.paths:
+					if danger_planet in path:
+					# generate permutations of possible float paths (first with a wait time of 1)
+						for i in range(2, path.index(danger_planet), 2):
+							new_float_path = copy.copy(path)
+							new_float_path[i:i] = wait
+							float_paths.append(new_float_path)
+		# float days can be more than one day
+		return float_paths
+
 	# Calculate the minimum amount of travel time taken for a route
 	def calculateMinimumTime(autonomy, path):
 		total = 0
@@ -95,6 +116,8 @@ class C3PO:
 
 	def giveMeTheOdds(self, empireJsonFile):
 		empire = Empire(empireJsonFile)
+		float_paths = C3PO.generateFloatPaths(self, empire)
+		self.paths.append(float_paths)
 		probabilities = []
 		for path in self.paths:
 			probabilities.append(C3PO.calculateProbability(self, path, empire))
