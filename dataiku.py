@@ -102,21 +102,34 @@ class C3PO:
 		return (sumProbability)
 
 	# Find the maximum probability of reaching Endor in a given path
+	# Need to test force refuel.
 	def calculateProbability(self, path, empire):
 		times = [d for d in path if type(d) == int]
 		paths = [p for p in path if type(p) == str]
 		current_day = 0
 		k = 0
-		for (planet, travel_time) in zip(paths, times):
+		autonomy = self.autonomy
+		for (planet, travel_time, i) in zip(paths, times, range(len(times))):
 			current_day += travel_time
+			autonomy -= travel_time
 			if current_day > empire.countdown:
 				return 0
 			if planet in empire.paths and current_day in empire.paths[planet]:
 				k += 1
-			if current_day != 0 and current_day % self.autonomy == 0: #force refuel
+			# Refuel if wait
+			if planet == 'Wait':
+				autonomy = self.autonomy
+			# Force refuel at current planet if the autonomy is 0 
+			if autonomy == 0:
 				current_day += 1
+				autonomy = self.autonomy
 				if planet in empire.paths and current_day in empire.paths[planet]:
 					k += 1
+			# Force refuel if you can't get to the next planet with a full tank
+			if paths[-1] != planet:
+				if autonomy - times[i + 1] < 0:
+					current_day += 1
+					autonomy = self.autonomy
 		return(1 - C3PO.probabilityCaptured(k))
 
 	def giveMeTheOdds(self, empireJsonFile):
