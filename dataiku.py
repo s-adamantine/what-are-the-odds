@@ -123,7 +123,7 @@ class C3PO:
 		empire = Empire(empireJsonFile)
 		float_paths = C3PO.generateFloatPaths(self, empire)
 		if float_paths:
-			self.paths.append(float_paths)
+			self.paths.extend(float_paths)
 		probabilities = []
 		for path in self.paths:
 			probabilities.append(C3PO.calculateProbability(self, path, empire))
