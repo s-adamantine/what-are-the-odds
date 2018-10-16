@@ -46,14 +46,11 @@ class C3PO:
 			for path in paths:
 				if route['origin'] in path:
 					if path[-1] == route['origin']:
-						path.append(route['travelTime'])
-						path.append(route['destination'])
+						path.extend([route['travelTime'], route['destination']])
 					else:
-						indexOf = path.index(route['origin'])
-						toAppend = path[:indexOf + 1]
-						toAppend.append(route['travelTime'])
-						toAppend.append(route['destination'])
-						paths.append(toAppend)
+						duplicate_path = C3PO.copyPath(path, route['origin'])
+						duplicate_path.extend([route['travelTime'], route['destination']])
+						paths.append(duplicate_path)
 						break
 		return paths
 
