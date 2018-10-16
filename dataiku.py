@@ -79,7 +79,6 @@ class C3PO:
 				new_float_path = copy.copy(float_path)
 				new_float_path[new_float_path.index('Wait') - 1] += 1
 				float_paths.append(new_float_path)
-		print(float_paths)
 		return float_paths
 
 	# Calculate the minimum amount of travel time taken for a route
@@ -123,7 +122,8 @@ class C3PO:
 	def giveMeTheOdds(self, empireJsonFile):
 		empire = Empire(empireJsonFile)
 		float_paths = C3PO.generateFloatPaths(self, empire)
-		self.paths.append(float_paths)
+		if float_paths:
+			self.paths.append(float_paths)
 		probabilities = []
 		for path in self.paths:
 			probabilities.append(C3PO.calculateProbability(self, path, empire))
