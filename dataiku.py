@@ -102,8 +102,7 @@ class C3PO:
 			sumProbability += (9 ** i) / (10 ** (i + 1))
 		return (sumProbability)
 
-	# Find the maximum probability of reaching Endor in the path
-	# (assuming no float time)
+	# Find the maximum probability of reaching Endor in a given path
 	def calculateProbability(self, path, empire):
 		times = [d for d in path if type(d) == int]
 		paths = [p for p in path if type(p) == str]
