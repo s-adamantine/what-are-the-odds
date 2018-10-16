@@ -31,7 +31,6 @@ class C3PO:
 		self.milleniumFalconJson = jsoncfg.load(milleniumFalconJsonFile)
 		self.autonomy = self.milleniumFalconJson['autonomy']
 		self.paths = C3PO.generatePaths(self)
-		self.min_path_times = C3PO.calculateMinimumTime(self)
 
 	# Copies a single path from the origin until (and including) a planet.
 	def copyPath(path, planet):
@@ -59,21 +58,18 @@ class C3PO:
 		return paths
 
 	# Calculate the minimum amount of travel time taken for a route
-	def calculateMinimumTime(self):
-		min_path_times = []
-		for path in self.paths:
-			total = 0
-			for route in path:
-				if "Endor" not in path:
-					break
-				if route == "Endor":
-					break
-				if isinstance(route, int):
-					total += route
-				if total % self.autonomy == 0:
-					total += 1
-			min_path_times.append(total)
-		return min_path_times
+	def calculateMinimumTime(autonomy, path):
+		total = 0
+		for route in path:
+			if "Endor" not in path:
+				break
+			if route == "Endor":
+				break
+			if isinstance(route, int):
+				total += route
+			if total % autonomy == 0:
+				total += 1
+		return total
 
 	def probabilityCaptured(k):
 		sumProbability = 0
