@@ -72,7 +72,14 @@ class C3PO:
 							new_float_path = copy.copy(path)
 							new_float_path[i:i] = wait
 							float_paths.append(new_float_path)
-		# float days can be more than one day
+		# Add wait times by one if we still have float days.
+		for float_path in float_paths:
+			float_days = empire.countdown - C3PO.calculateMinimumTime(self.autonomy, float_path)
+			if float_days > 0:
+				new_float_path = copy.copy(float_path)
+				new_float_path[new_float_path.index('Wait') - 1] += 1
+				float_paths.append(new_float_path)
+		print(float_paths)
 		return float_paths
 
 	# Calculate the minimum amount of travel time taken for a route
