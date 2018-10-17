@@ -24,9 +24,6 @@ class C3PO:
 	# @travel_times: A list of lists. Each element of the outer list contains a list
 	#         of integers each detailing the time taken to travel from planet to planet
 	#         of the respective path in self.paths.
-	# @min_path_times: List. Each element in this list corresponds to a corresponding
-	#         path in self.paths. Integer. The minimum time you would take to complete
-	#         the total journey, including refuels.
 	def __init__(self, milleniumFalconJsonFile):
 		self.milleniumFalconJson = jsoncfg.load(milleniumFalconJsonFile)
 		self.autonomy = self.milleniumFalconJson['autonomy']
@@ -37,11 +34,10 @@ class C3PO:
 		indexOf = path.index(planet)
 		return copy.copy(path[:(indexOf + 1)])
 
-	# Generate an array (or a python list) of linked lists, each representing a 
-	# single valid travel path from Tatooine to Endor.
+	# Generate an array (or a python list) of lists, with each element representing a
+	# single valid travel path (and their travel times) from Tatooine to Endor.
 	def generatePaths(self):
 		paths = [[0, 'Tatooine']]
-		# iterate through each new destination and add it to an origin 
 		for route in self.milleniumFalconJson['routes']:
 			for path in paths:
 				if route['origin'] in path:
@@ -62,6 +58,7 @@ class C3PO:
 
 	# Generate all the extra float paths, given the current possible paths and the empire's
 	# countdown.
+	# Float paths are paths that contain 'Wait' at a planet in its routes.
 	def generateFloatPaths(self, empire):
 		wait = [1, 'Wait']
 		float_paths = []
@@ -70,7 +67,7 @@ class C3PO:
 			if float_days <= 0:
 				continue
 			else:
-				# only need to take a float day if you're trying to avoid someone.
+				# only need to use a float day if you're trying to avoid the enemy.
 				for danger_planet in empire.paths:
 					if danger_planet in path:
 					# generate permutations of possible float paths (first with a wait time of 1)
@@ -87,7 +84,7 @@ class C3PO:
 				float_paths.append(new_float_path)
 		return float_paths
 
-	# Calculate the minimum amount of travel time taken for a route
+	# Calculate the minimum amount of travel time taken for a path
 	def calculateMinimumTime(autonomy, path):
 		total = 0
 		for route in path:
