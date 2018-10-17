@@ -52,6 +52,12 @@ class C3PO:
 						duplicate_path.extend([route['travelTime'], route['destination']])
 						paths.append(duplicate_path)
 						break
+		# All routes lead to Endor
+		for path in paths:
+			while path[-1] != 'Endor':
+				for route in self.milleniumFalconJson['routes']:
+					if path[-1] == route['origin']:
+						path.extend([route['travelTime'], route['destination']])
 		return paths
 
 	# Generate all the extra float paths, given the current possible paths and the empire's
