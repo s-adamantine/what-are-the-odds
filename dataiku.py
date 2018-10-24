@@ -1,4 +1,4 @@
-from C3PO_class import C3PO
+from classes.C3PO import C3PO
 
 milleniumFalconJsonFile = "./millenium-falcon.json"
 empireJsonFile = "./empire.json"

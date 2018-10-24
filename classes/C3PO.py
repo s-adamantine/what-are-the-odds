@@ -1,6 +1,6 @@
 import jsoncfg
 import copy
-from empire_class import Empire
+from classes.empire import Empire
 
 class C3PO:
 
@@ -104,7 +104,7 @@ class C3PO:
 			# Refuel if wait
 			if planet == 'Wait':
 				autonomy = self.autonomy
-			# Force refuel at current planet if the autonomy is 0 
+			# Force refuel at current planet if the autonomy is 0
 			if autonomy == 0:
 				current_day += 1
 				autonomy = self.autonomy
